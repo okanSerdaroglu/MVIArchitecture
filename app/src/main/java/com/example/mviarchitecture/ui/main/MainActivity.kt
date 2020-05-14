@@ -1,7 +1,8 @@
-package com.example.mviarchitecture
+package com.example.mviarchitecture.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.mviarchitecture.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,7 +14,9 @@ class MainActivity : AppCompatActivity() {
 
     fun showMainFragment(){
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container,MainFragment(),"MainFragment").commit()
+            .replace(
+                R.id.fragment_container,
+                MainFragment(),"MainFragment").commit()
     }
 
 }

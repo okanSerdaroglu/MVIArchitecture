@@ -1,8 +1,9 @@
-package com.example.mviarchitecture
+package com.example.mviarchitecture.ui.main
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import com.example.mviarchitecture.R
 
 class MainFragment : Fragment() {
 
@@ -17,6 +18,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
