@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.mviarchitecture.models.BlogPost
 import com.example.mviarchitecture.models.User
+import com.example.mviarchitecture.repository.Repository
 import com.example.mviarchitecture.ui.main.state.MainStateEvent
 import com.example.mviarchitecture.ui.main.state.MainViewState
 import com.example.mviarchitecture.util.AbsentLiveData
@@ -35,11 +36,11 @@ class MainViewModel : ViewModel() {
     private fun handleStateEvent(stateEvent: MainStateEvent): LiveData<MainViewState> {
         return when (stateEvent) {
             is MainStateEvent.GetBlogPostsEvent -> {
-                AbsentLiveData.create()
+                return Repository.getBlogPosts()
             }
 
             is MainStateEvent.GetUserEvent -> {
-                AbsentLiveData.create()
+                return Repository.getUser(stateEvent.userID)
             }
 
             is MainStateEvent.None -> {
