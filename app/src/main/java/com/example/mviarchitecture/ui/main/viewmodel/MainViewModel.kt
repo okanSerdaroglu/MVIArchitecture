@@ -24,6 +24,7 @@ class MainViewModel : ViewModel() {
     return _viewState
     }*/
 
+
     val dataState: LiveData<MainViewState> = Transformations
         .switchMap(_stateEvent) { stateEvent ->
             stateEvent?.let {

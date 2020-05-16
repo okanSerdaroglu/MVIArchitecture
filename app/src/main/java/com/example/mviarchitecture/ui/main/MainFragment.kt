@@ -25,13 +25,17 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
+        /** initialize viewModel the best way*/
         viewModel = activity?.run {
             ViewModelProvider(this).get(MainViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+
         subscribeObservers()
     }
 
     private fun subscribeObservers() {
+
+        /** get data from repository layer and update your data */
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             println("DEBUG: DataState: $dataState")
             dataState.blogPost?.let { blogPosts ->
@@ -46,12 +50,14 @@ class MainFragment : Fragment() {
 
         })
 
+        /** update UI views */
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState.blogPost?.let {
                 print("DEBUG: Setting blog posts to RecyclerView: $viewState")
             }
         })
 
+        /** update UI views */
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState.user?.let {
                 print("DEBUG: Setting user data: $viewState")
