@@ -1,15 +1,20 @@
 package com.example.mviarchitecture.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mviarchitecture.R
+import com.example.mviarchitecture.ui.DataStateListener
 import com.example.mviarchitecture.ui.main.state.MainStateEvent.*
 import com.example.mviarchitecture.ui.main.viewmodel.MainViewModel
+import java.lang.ClassCastException
 
 class MainFragment : Fragment() {
+
+    lateinit var dataStateHandler: DataStateListener
 
     private lateinit var viewModel: MainViewModel
 
@@ -38,6 +43,8 @@ class MainFragment : Fragment() {
         /** get data from repository layer and update your data */
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             println("DEBUG: DataState: $dataState")
+            // handle loading and message
+            dataStateHandler.onDataStateChanged(dataState)
 
             // Handle Data<T>
             dataState.data?.let {
@@ -50,16 +57,6 @@ class MainFragment : Fragment() {
                     // set user data
                     viewModel.setUser(user)
                 }
-            }
-
-            // Handle Error
-            dataState.message?.let {
-
-            }
-
-            // Handle loading
-            dataState.loading?.let {
-
             }
 
 
@@ -100,6 +97,15 @@ class MainFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.main_menu, menu)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            dataStateHandler = context as DataStateListener
+        } catch (e: ClassCastException) {
+            println("DEBUG: $context must implement DataStateListener")
+        }
     }
 
 }
