@@ -38,6 +38,8 @@ class MainFragment : Fragment() {
         /** get data from repository layer and update your data */
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             println("DEBUG: DataState: $dataState")
+
+            // Handle Data<T>
             dataState.data?.let {
                 it.blogPost?.let { blogPosts ->
                     // set blogPost data
@@ -48,6 +50,16 @@ class MainFragment : Fragment() {
                     // set user data
                     viewModel.setUser(user)
                 }
+            }
+
+            // Handle Error
+            dataState.message?.let {
+
+            }
+
+            // Handle loading
+            dataState.loading?.let {
+
             }
 
 

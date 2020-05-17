@@ -20,6 +20,11 @@ data class DataState<T>(
         }
     }
 
+    override fun toString(): String {
+        return "DataState(message=$message, loading=$loading, data=$data)"
+    }
+
+
 }
 
 
