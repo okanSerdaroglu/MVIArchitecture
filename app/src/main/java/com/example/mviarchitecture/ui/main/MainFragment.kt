@@ -6,17 +6,23 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mviarchitecture.R
+import com.example.mviarchitecture.models.BlogPost
 import com.example.mviarchitecture.ui.DataStateListener
 import com.example.mviarchitecture.ui.main.state.MainStateEvent.*
 import com.example.mviarchitecture.ui.main.viewmodel.MainViewModel
+import com.example.mviarchitecture.util.TopSpacingItemDecoration
+import kotlinx.android.synthetic.main.fragment_main.*
 import java.lang.ClassCastException
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), BlogListAdapter.Interaction {
 
     lateinit var dataStateHandler: DataStateListener
 
     private lateinit var viewModel: MainViewModel
+
+    lateinit var blogListAdapter: BlogListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +42,17 @@ class MainFragment : Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         subscribeObservers()
+    }
+
+    private fun initRecyclerView() {
+        recycler_view.apply {
+            layoutManager = LinearLayoutManager(activity)
+            val topSpacingItemDecoration = TopSpacingItemDecoration(30)
+            addItemDecoration(topSpacingItemDecoration)
+            blogListAdapter = BlogListAdapter(this@MainFragment)
+            adapter = blogListAdapter
+
+        }
     }
 
     private fun subscribeObservers() {
@@ -64,8 +81,10 @@ class MainFragment : Fragment() {
 
         /** update UI views */
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
-            viewState.blogPost?.let {
+            viewState.blogPost?.let { blogPostList ->
                 print("DEBUG: Setting blog posts to RecyclerView: $viewState")
+                blogListAdapter.submitList(blogPostList)
+                recycler_view.adapter = blogListAdapter
             }
         })
 
@@ -106,6 +125,12 @@ class MainFragment : Fragment() {
         } catch (e: ClassCastException) {
             println("DEBUG: $context must implement DataStateListener")
         }
+    }
+
+    override fun onItemSelected(position: Int, item: BlogPost) {
+        println("DEBUG: CLICKED $position")
+        println("DEBUG: CLICKED ${item.title}")
+
     }
 
 }
