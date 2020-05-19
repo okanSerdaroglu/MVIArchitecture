@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.mviarchitecture.R
 import com.example.mviarchitecture.models.BlogPost
+import com.example.mviarchitecture.models.User
 import com.example.mviarchitecture.ui.DataStateListener
 import com.example.mviarchitecture.ui.main.state.MainStateEvent.*
 import com.example.mviarchitecture.ui.main.viewmodel.MainViewModel
@@ -36,7 +38,7 @@ class MainFragment : Fragment(), BlogListAdapter.Interaction {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        /** initialize viewModel the best way*/
+        // initialize viewModel the best way
         viewModel = activity?.run {
             ViewModelProvider(this).get(MainViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
@@ -55,6 +57,17 @@ class MainFragment : Fragment(), BlogListAdapter.Interaction {
 
         }
     }
+
+    private fun setUserProperty(user: User) {
+        email.text = user.email
+        username.text = user.username
+        view?.let {
+            Glide.with(it.context)
+                .load(user.image)
+                .into(image)
+        }
+    }
+
 
     private fun subscribeObservers() {
 
@@ -80,7 +93,7 @@ class MainFragment : Fragment(), BlogListAdapter.Interaction {
             }
         })
 
-        /** update UI views */
+        // update UI views
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState.blogPost?.let { blogPostList ->
                 print("DEBUG: Setting blog posts to RecyclerView: $viewState")
@@ -88,6 +101,7 @@ class MainFragment : Fragment(), BlogListAdapter.Interaction {
             }
             viewState.user?.let {
                 print("DEBUG: Setting user data: $viewState")
+                setUserProperty(it)
             }
 
         })
