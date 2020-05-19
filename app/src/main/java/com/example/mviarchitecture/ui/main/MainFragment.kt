@@ -42,6 +42,7 @@ class MainFragment : Fragment(), BlogListAdapter.Interaction {
         } ?: throw Exception("Invalid Activity")
 
         subscribeObservers()
+        initRecyclerView()
     }
 
     private fun initRecyclerView() {
@@ -84,15 +85,11 @@ class MainFragment : Fragment(), BlogListAdapter.Interaction {
             viewState.blogPost?.let { blogPostList ->
                 print("DEBUG: Setting blog posts to RecyclerView: $viewState")
                 blogListAdapter.submitList(blogPostList)
-                recycler_view.adapter = blogListAdapter
             }
-        })
-
-        /** update UI views */
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState.user?.let {
                 print("DEBUG: Setting user data: $viewState")
             }
+
         })
 
     }
