@@ -1,0 +1,9 @@
+MVI is a event driven architecture.
+In this example, on the menu when you click getUser item,
+you trigger a getUser event in ViewModel.
+ViewModel handles it and send call according method
+in repository layer.
+
+** ViewState,StateEvent,ViewModel,Repository
+
+Every viewModel has unique viewState, unique stateEvent and a unique repository
